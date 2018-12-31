@@ -1,0 +1,858 @@
+<template>
+    <div>
+        <v-app id="inspire">
+            <!--<v-navigation-drawer persistent light :mini-variant.sync="mini" v-model="drawer" mini-variant-width="60">
+                <v-toolbar flat class="transparent">
+                    <v-list class="pa-0">
+                        <v-list-tile avatar>
+                            <v-list-tile-avatar>
+                                <img src="https://randomuser.me/api/portraits/men/85.jpg" />
+                            </v-list-tile-avatar>
+                            <v-list-tile-content>
+                                <v-list-tile-title>John Leider</v-list-tile-title>
+                            </v-list-tile-content>
+                            <v-list-tile-action>
+                                <v-btn icon @click.native.stop="mini = !mini">
+                                    <v-icon>chevron_left</v-icon>
+                                </v-btn>
+                            </v-list-tile-action>
+                        </v-list-tile>
+                    </v-list>
+                </v-toolbar>
+                <v-list class="pt-0" dense>
+                    <v-divider></v-divider>
+                    <v-list-tile v-for="item in items" :key="item.title" @click="">
+                        <v-list-tile-action>
+                            <v-icon>{{ item.icon }}</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                </v-list>
+            </v-navigation-drawer>-->
+
+            <v-navigation-drawer fixed
+                                 v-model="drawer"
+                                 app class="hfcolor">
+                <menu-component></menu-component>
+            </v-navigation-drawer>
+
+
+            <!--   ****  NAVIGATION DRAWER ENDED  **** -->
+
+            <v-toolbar color="#6894c1" dark fixed app>
+                <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+
+                <div class="flex xs6">
+                    <div class="v-card px-0 pa-0">
+                        <v-text-field flat px-0 pa-0 class="head-search" label="Solo"
+                                      placeholder="Placeholder"
+                                      solo hide-details single-line></v-text-field>
+                        <!----<v-text-field class="head-search" light placeholder="Search keywords...">
+                        </v-text-field>-->
+                    </div>
+                </div>
+
+                <div class="flex xs6">
+                    <div class="v-card solo " solo>
+
+                        <div class="v-card__text pa-0">
+
+                        </div>
+                    </div>
+                </div>
+
+                <!----<v-toolbar-title>Hello {{UserName}}</v-toolbar-title>-->
+                <v-spacer></v-spacer>
+                <v-btn icon>
+                    <v-icon>mail_outline </v-icon>
+                </v-btn>
+
+                <v-btn icon>
+                    <v-icon>notifications_none</v-icon>
+                </v-btn>
+
+                <v-avatar>
+                    <img src="https://cdn.vuetifyjs.com/images/john.jpg"
+                         alt="John">
+                </v-avatar>
+
+
+            </v-toolbar>
+            <!-----------tool bar ended ---->
+
+            <v-layout row>
+                <v-flex md4 class="app sidebar-compact sidebar-show">
+                </v-flex>
+            </v-layout>
+
+            <v-container-fluid class="breadcrumb" breadcrumb pa-2 ma-2>
+                <v-layout row>
+                    <v-flex md4>
+
+                        <v-breadcrumbs icons divider=">">
+                            <v-breadcrumbs-item href="/">
+                                Dashboard
+                            </v-breadcrumbs-item>
+                            <v-breadcrumbs-item>
+                                Assign Tickets
+                            </v-breadcrumbs-item>
+                        </v-breadcrumbs>
+                    </v-flex>
+                </v-layout>
+            </v-container-fluid>
+            <!-----BREAD CRUMB ENDED ----->
+            <!-----OPTIONS BAR STARTED ----->
+
+            <v-container-fluid class="optionsbar" optionsbar pa-2 ma-2>
+                <v-layout row>
+                    <v-flex md1 d-flex flex-row flex-end>
+                        <v-checkbox v-model="checkbox" color="blue" justify-center>
+
+                        </v-checkbox>
+
+                    </v-flex>
+
+                    <v-flex md3>
+                        <div class="options-button-group">
+                            <ul>
+                                <li>
+                                    <v-btn icon ripple="false">
+                                        <i class="fas fa-info-circle"></i>
+                                    </v-btn>
+                                </li>
+                                <li>
+                                    <v-btn icon ripple="false">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </v-btn>
+                                </li>
+                                <li>
+                                    <v-btn icon ripple="false">
+                                        <!--<i class="fal fa-code-merge"></i>
+                                        <v-icon>edit</v-icon>-->
+                                        <i class="fas fa-code-merge"></i>
+                                    </v-btn>
+                                </li>
+                                <li>
+                                    <v-btn icon ripple="false">
+                                        <i class="fas fa-thumbtack"></i>
+
+                                    </v-btn>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                    </v-flex>
+                </v-layout>
+
+                <!--ADD BUTTON SATRT -->
+                <v-flex xs6 sm3 md3 d-flex flex-start>
+                    <v-btn color="pink"
+                           dark
+                           small
+                           absolute
+                           bottom
+                           left
+                           fab>
+                        <v-icon>add</v-icon>
+                    </v-btn>
+                    <!-- <v-card>
+                        <v-toolbar extended>
+                            <v-toolbar-side-icon></v-toolbar-side-icon>
+                            <v-btn color="pink"
+                                   dark
+                                   small
+                                   absolute
+                                   bottom
+                                   left
+                                   fab>
+                                <v-icon>add</v-icon>
+                            </v-btn>
+                        </v-toolbar>
+                        <v-card-text style="height: 236px;" class="grey lighten-5"></v-card-text>
+                        <v-card-text style="height: 100px; position: relative"></v-card-text>
+                    </v-card>-->
+
+                </v-flex>
+                <!--ADD BUTTON ENDED-->
+
+                <v-spacer></v-spacer>
+            </v-container-fluid>
+            <!--OPTIONS BAR ENDED-->
+            <!--Ticket List Started-->
+            <v-content d-flex flex-row class="ticket-list-container" id="style-100" fill-height pa-0>
+                
+                <v-layout row>
+
+                    <v-flex xs10 id="style-10" class="flex-cover">
+                        <v-container class="ticket-wrap" mb-3 mt-3 mr-0 pa-0 pa-0>
+                            <v-layout layout row wrap justify-center>
+
+                                <v-flex xs1 fill-height>
+                                    <v-checkbox v-model="checkbox" class="justify-center">&nbsp;</v-checkbox>
+                                </v-flex>
+
+
+
+                                <v-flex xs1 text-xs-center align-center>
+                                    <div class="v-input__prepend-outer">
+                                        <div class="v-input__icon v-input__icon--prepend">
+                                            <i aria-hidden="true" class="call v-icon material-icons theme--light">phone</i>
+                                        </div>
+                                    </div>
+                                </v-flex>
+
+                                <v-flex xs7>
+                                    <v-layout justify-space-between>
+
+                                        <v-flex xs12>
+                                            <div class="ticket-heading d-flex flex-row">
+                                                <h3> #10 LISTING NOT PULLING TO CBBAIN.COM - PUBLIC WEBITE NOT PULLING TO CBBAIN.COM  - PUBLIC WEBITE NOT PULLING TO CBBAIN.COM   </h3>
+                                            </div>
+                                        </v-flex>
+
+
+
+                                    </v-layout>
+                                    <!--<hr class="v-divider theme--light">-->
+                                    <v-layout>
+
+                                        <v-flex xs4 class="flex d-flex flex-row  ">
+                                            <div class="imtiaz d-flex">
+                                                <!--<span class ="date-icon"><i class="fa fa-calendar-check" aria-hidden="true"></i></span> --->
+                                                <span class="ticket-date tldnu"><i class="fa fa-calendar-check" aria-hidden="true"></i> Dec 5 2018</span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs4 class="d-flex flex-row">
+
+                                            <div class="imtiaz d-flex align-middle">
+                                                <!--<span class="date-icon"><i class="fa fa-user" aria-hidden="true"></i></span> -->
+                                                <span class="tldnu"><i class="fa fa-user" aria-hidden="true"></i>Contact : John Smith {Google}</span>
+                                            </div>
+                                        </v-flex>
+
+
+                                        <v-flex xs4 class="flex d-flex flex-row  ">
+
+                                        </v-flex>
+
+
+
+                                    </v-layout>
+                                    <!--<hr class="v-divider theme--light">-->
+                                </v-flex>
+                                <!--<hr class="v-divider theme--light">-->
+                                <!--<v-spacer></v-spacer>-->
+                                <v-flex xs3 class="blue-sep">
+                                    <v-layout row>
+                                        <v-flex class="d-flex ">
+                                            <div class="imtiaz d-flex text-xs-right left-col">
+                                                <span class="">Status : </span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex class="d-flex text-xs-center">
+
+                                            <v-flex xs4 sm4 align-start justify-center pa-0 ma-0>
+
+                                                <v-overflow-btn pa-0 ma-0 offset-x
+                                                                :items="dropdown_font"
+                                                                label="Overflow Btn"
+                                                                target="#dropdown-example" offset-y bottom left></v-overflow-btn>
+
+                                            </v-flex>
+
+                                            <v-flex xs4 sm4>
+
+                                                <div class="imtiaz d-flex text-xs-right">
+                                                    <span class="">Active </span>
+                                                </div>
+                                            </v-flex>
+
+                                            <v-flex xs4 sm4>
+                                                <div class="imtiaz d-flex text-xs-center">
+                                                    <span class=""> <i class="fas fa-chevron-down"></i></span>
+                                                </div>
+                                            </v-flex>
+
+                                        </v-flex>
+
+                                    </v-layout>
+                                    <v-layout row>
+                                        <v-flex class="d-flex ">
+                                            <div class="imtiaz d-flex text-xs-right left-col">
+                                                <span class="">Priority : </span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex class="d-flex text-xs-center">
+
+                                            <v-flex xs4 sm4>
+                                                <!--<v-select :items="items"
+                                box
+                                flat></v-select>-->
+                                            </v-flex>
+
+                                            <v-flex xs4 sm4>
+
+                                                <div class="imtiaz d-flex text-xs-right">
+                                                    <span class="">High </span>
+                                                </div>
+                                            </v-flex>
+
+                                            <v-flex xs4 sm4>
+                                                <div class="imtiaz d-flex text-xs-center">
+                                                    <span class=""> <i class="fas fa-chevron-down"></i></span>
+                                                </div>
+                                            </v-flex>
+
+                                        </v-flex>
+
+                                    </v-layout>
+
+                                    <v-layout row>
+
+                                        <v-flex d-flex>
+                                            <div class="imtiaz d-flex align-right  left-col">
+                                                <span class="text-xs-right">Assign to : </span>
+                                            </div>
+                                        </v-flex>
+
+
+
+                                        <v-flex class="d-flex text-xs-center">
+
+                                            <v-flex xs8 sm8>
+
+                                                <div class="imtiaz d-flex text-xs-right">
+                                                    <span class="">William Smith </span>
+                                                </div>
+                                            </v-flex>
+
+                                            <v-flex xs4 sm4>
+                                                <div class="imtiaz d-flex text-xs-center">
+                                                    <span class=""> <i class="fas fa-chevron-down"></i></span>
+                                                </div>
+                                            </v-flex>
+
+                                        </v-flex>
+
+
+                                    </v-layout>
+                                </v-flex>
+                                <v-spacer></v-spacer>
+                            </v-layout>
+                        </v-container>
+
+                        <v-container fluid class="ticket-wrap" mb-3 mt-3 mr-0 pa-0>
+                            <v-layout row wrap>
+
+                                <v-flex xs1 fill-height>
+                                    <v-checkbox v-model="checkbox" class="justify-center">&nbsp;</v-checkbox>
+                                </v-flex>
+
+
+                                <v-flex xs1 text-xs-center align-center>
+                                    <div class="v-input__prepend-outer">
+                                        <div class="v-input__icon v-input__icon--prepend">
+                                            <i aria-hidden="true" class="call v-icon material-icons theme--light">phone</i>
+                                        </div>
+                                    </div>
+                                </v-flex>
+
+                                <v-flex xs7>
+                                    <v-layout justify-space-between>
+
+                                        <v-flex xs12>
+                                            <div class="ticket-heading d-flex flex-row">
+                                                <h3> #10 LISTING NOT PULLING TO CBBAIN.COM - PUBLIC WEBITE NOT PULLING TO CBBAIN.COM  </h3>
+                                            </div>
+                                        </v-flex>
+
+
+
+                                    </v-layout>
+                                    <!--<hr class="v-divider theme--light">-->
+                                    <v-layout>
+                                        <v-flex xs3 class="d-flex flex-row align-items-center">
+
+                                            <!---<div class="d-flex flex-row align-items-center">
+                            <v-btn color="primary" light class="text-xs-center">Active</v-btn></div>-->
+
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">Contact : John Smith {Google}</span>
+                                            </div>
+                                        </v-flex>
+                                        <v-flex xs3 class="flex d-flex flex-row align-items-center ">
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">Assigned to : John Smith </span>
+                                            </div>
+                                        </v-flex>
+
+
+
+                                    </v-layout>
+                                    <!--<hr class="v-divider theme--light">-->
+                                </v-flex>
+                                <!--<hr class="v-divider theme--light">-->
+                                <!--<v-spacer></v-spacer>-->
+                                <v-flex xs3 class="blue-sep">
+                                    <v-layout row>
+                                        <v-flex xs6 class="d-flex ">
+                                            <div class="imtiaz d-flex text-xs-right">
+                                                <span class="">Status : </span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs6 class="d-flex text-xs-center">
+
+                                            <v-flex xs4 sm4>
+                                                <v-select :items="items"
+                                                          box
+                                                          flat offset-y bottom left></v-select>
+                                            </v-flex>
+
+                                            <v-flex xs4 sm4>
+
+                                                <div class="imtiaz d-flex text-xs-right">
+                                                    <span class="">Active </span>
+                                                </div>
+                                            </v-flex>
+
+                                            <v-flex xs4 sm4>
+                                                <div class="imtiaz d-flex text-xs-center">
+                                                    <span class=""> <i class="fas fa-chevron-down"></i></span>
+                                                </div>
+                                            </v-flex>
+
+                                        </v-flex>
+
+                                    </v-layout>
+                                    <v-layout row>
+
+                                        <v-flex xs6 class="d-flex ">
+                                            <div class="imtiaz d-flex">
+                                                <span class="align-self-left text-xs-right">Priority : </span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs6>
+
+                                            <v-flex xs6 class="d-flex ">
+                                                <div class="imtiaz d-flex text-xs-right">
+                                                    <span>High</span>
+                                                </div>
+                                            </v-flex>
+                                            <v-flex xs6 class="d-flex ">
+                                                <div class="imtiaz d-flex text-xs-right">
+                                                    <span><i class="fas fa-chevron-down"></i></span>
+                                                </div>
+                                            </v-flex>
+                                        </v-flex>
+                                    </v-layout>
+
+                                    <v-layout row>
+
+                                        <v-flex xs6 class="d-flex ">
+                                            <div class="imtiaz d-flex align-right">
+                                                <span class="text-xs-right">Assign to : </span>
+                                            </div>
+                                        </v-flex>
+
+
+
+                                        <v-flex xs6>
+
+                                            <v-flex xs6 class="d-flex ">
+                                                <div class="imtiaz d-flex text-xs-right">
+                                                    <span>Willaim Smith</span>
+                                                </div>
+                                            </v-flex>
+                                            <v-flex xs6 class="d-flex ">
+                                                <div class="imtiaz d-flex text-xs-right">
+                                                    <span><i class="fas fa-chevron-down"></i></span>
+                                                </div>
+                                            </v-flex>
+                                        </v-flex>
+
+
+                                    </v-layout>
+                                </v-flex>
+                                <v-spacer></v-spacer>
+                            </v-layout>
+                        </v-container>
+
+                        <v-container fluid class="ticket-wrap" mb-3 mt-3 mr-0 pa-0>
+                            <v-layout layout row justify-center>
+
+                                <v-flex xs1 fill-height>
+                                    <v-checkbox v-model="checkbox" class="justify-center">&nbsp;</v-checkbox>
+                                </v-flex>
+
+
+                                <v-flex xs1 text-xs-center align-center>
+                                    <div class="v-input__prepend-outer">
+                                        <div class="v-input__icon v-input__icon--prepend">
+                                            <i aria-hidden="true" class="call v-icon material-icons theme--light">phone</i>
+                                        </div>
+                                    </div>
+                                </v-flex>
+
+                                <v-flex xs8>
+                                    <v-layout justify-space-between>
+
+                                        <v-flex xs12>
+                                            <div class="ticket-heading d-flex flex-row">
+                                                <h3>#10 LISTING NOT PULLING TO CBBAIN.COM - PUBLIC WEBITE  DUO REGES: CONSTRUCTIO INTERRETE. NIHIL AD REM! NE SIT SANE DUO REGES: CONSTRUCTIO INTERRETE. NIHIL AD REM! NE SIT SANE; DUO REGES: CONSTRUCTIO INTERRETE. NIHIL...</h3>
+                                            </div>
+                                        </v-flex>
+
+                                    </v-layout>
+                                    <!--<hr class="v-divider theme--light">-->
+                                    <v-layout>
+                                        <v-flex xs3 class="d-flex flex-row align-items-center">
+
+                                            <div class="d-flex flex-row align-items-center">
+                                                <v-btn color="primary" light class="text-xs-center">
+                                                    Active
+
+                                                </v-btn>
+
+                                            </div>
+
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">Contact : John Smith {Google}</span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs3 class="flex d-flex flex-row align-items-center ">
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">Assigned to : John Smith {Google}</span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs3 class="flex d-flex flex-row align-items-center">
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">
+                                                    Priority : <v-span style="color:red;">High</v-span>
+                                                </span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs3 flex d-flex flex-row align-items-center>
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">
+                                                    Severity : Critical
+                                                </span>
+                                            </div>
+                                        </v-flex>
+
+                                    </v-layout>
+                                    <!--<hr class="v-divider theme--light">-->
+                                </v-flex>
+                                <!--<hr class="v-divider theme--light">-->
+                                <v-flex xs2 class="blue-sep">
+                                    <v-layout row>
+                                        <v-flex xs6 class="d-flex ">
+                                            <div class="imtiaz d-flex align-left">
+                                                <span class="align-self-left align-left">Status : </span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs6 class="d-flex ">
+
+                                            <div class="imtiaz d-flex align-left">
+                                                <span class="align-self-left align-left">CBOX</span>
+                                            </div>
+                                            <div class="imtiaz d-flex align-left">
+                                                <span class="align-self-left align-left">Active </span>
+                                            </div>
+
+                                        </v-flex>
+
+                                    </v-layout>
+                                </v-flex>
+                                <v-spacer></v-spacer>
+                            </v-layout>
+                        </v-container>
+
+                        <v-container fluid class="ticket-wrap" mb-3 mt-3 mr-0 pa-0>
+                            <v-layout layout row justify-center>
+
+                                <v-flex xs1 fill-height>
+                                    <v-checkbox v-model="checkbox" class="justify-center">&nbsp;</v-checkbox>
+                                </v-flex>
+
+
+                                <v-flex xs1 text-xs-center align-center>
+                                    <div class="v-input__prepend-outer">
+                                        <div class="v-input__icon v-input__icon--prepend">
+                                            <i aria-hidden="true" class="call v-icon material-icons theme--light">phone</i>
+                                        </div>
+                                    </div>
+                                </v-flex>
+
+                                <v-flex xs10>
+                                    <v-layout justify-space-between>
+
+                                        <v-flex xs12>
+                                            <div class="ticket-heading d-flex flex-row">
+                                                <h3>#10 LISTING NOT PULLING TO CBBAIN.COM - PUBLIC WEBITE  DUO REGES: CONSTRUCTIO INTERRETE. NIHIL AD REM! NE SIT SANE DUO REGES: CONSTRUCTIO INTERRETE. NIHIL AD REM! NE SIT SANE; DUO REGES: CONSTRUCTIO INTERRETE. NIHIL...</h3>
+                                            </div>
+                                        </v-flex>
+
+                                    </v-layout>
+                                    <!--<hr class="v-divider theme--light">-->
+                                    <v-layout>
+                                        <v-flex xs3 class="d-flex flex-row align-items-center">
+
+                                            <div class="d-flex flex-row align-items-center">
+                                                <v-btn color="primary" light class="text-xs-center">
+                                                    Active
+
+                                                </v-btn>
+
+                                            </div>
+
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">Contact : John Smith {Google}</span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs3 class="flex d-flex flex-row align-items-center ">
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">Assigned to : John Smith {Google}</span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs3 class="flex d-flex flex-row align-items-center">
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">
+                                                    Priority : <v-span style="color:red;">High</v-span>
+                                                </span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs3 flex d-flex flex-row align-items-center>
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">
+                                                    Severity : Critical
+                                                </span>
+                                            </div>
+                                        </v-flex>
+
+                                    </v-layout>
+                                    <!--<hr class="v-divider theme--light">-->
+                                </v-flex>
+                                <!--<hr class="v-divider theme--light">-->
+                            </v-layout>
+                        </v-container>
+
+                        <v-container fluid class="ticket-wrap" mb-3 mt-3 mr-0 pa-0 mr-0>
+                            <v-layout layout row justify-center>
+
+                                <v-flex xs1 fill-height>
+                                    <v-checkbox v-model="checkbox" class="justify-center">&nbsp;</v-checkbox>
+                                </v-flex>
+
+
+                                <v-flex xs1 text-xs-center align-center>
+                                    <div class="v-input__prepend-outer">
+                                        <div class="v-input__icon v-input__icon--prepend">
+                                            <i aria-hidden="true" class="call v-icon material-icons theme--light">phone</i>
+                                        </div>
+                                    </div>
+                                </v-flex>
+
+                                <v-flex xs10>
+                                    <v-layout justify-space-between>
+
+                                        <v-flex xs12>
+                                            <div class="ticket-heading d-flex flex-row">
+                                                <h3>#10 LISTING NOT PULLING TO CBBAIN.COM - PUBLIC WEBITE  DUO REGES: CONSTRUCTIO INTERRETE. NIHIL AD REM! NE SIT SANE DUO REGES: CONSTRUCTIO INTERRETE. NIHIL AD REM! NE SIT SANE; DUO REGES: CONSTRUCTIO INTERRETE. NIHIL...</h3>
+                                            </div>
+                                        </v-flex>
+
+                                    </v-layout>
+                                    <!--<hr class="v-divider theme--light">-->
+                                    <v-layout>
+                                        <v-flex xs3 class="d-flex flex-row align-items-center">
+
+                                            <div class="d-flex flex-row align-items-center">
+                                                <v-btn color="primary" light class="text-xs-center">
+                                                    Active
+
+                                                </v-btn>
+
+                                            </div>
+
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">Contact : John Smith {Google}</span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs3 class="flex d-flex flex-row align-items-center ">
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">Assigned to : John Smith {Google}</span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs3 class="flex d-flex flex-row align-items-center">
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">
+                                                    Priority : <v-span style="color:red;">High</v-span>
+                                                </span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs3 flex d-flex flex-row align-items-center>
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">
+                                                    Severity : Critical
+                                                </span>
+                                            </div>
+                                        </v-flex>
+
+                                    </v-layout>
+                                    <!--<hr class="v-divider theme--light">-->
+                                </v-flex>
+                                <!--<hr class="v-divider theme--light">-->
+                            </v-layout>
+                        </v-container>
+
+                        <v-container fluid class="ticket-wrap" mb-3 mt-3 mr-0 pa-0>
+                            <v-layout layout row justify-center>
+
+                                <v-flex xs1 fill-height>
+                                    <v-checkbox v-model="checkbox" class="justify-center">&nbsp;</v-checkbox>
+                                </v-flex>
+
+
+                                <v-flex xs1 text-xs-center align-center>
+                                    <div class="v-input__prepend-outer">
+                                        <div class="v-input__icon v-input__icon--prepend">
+                                            <i aria-hidden="true" class="call v-icon material-icons theme--light">phone</i>
+                                        </div>
+                                    </div>
+                                </v-flex>
+
+                                <v-flex xs10>
+                                    <v-layout justify-space-between>
+
+                                        <v-flex xs12>
+                                            <div class="ticket-heading d-flex flex-row">
+                                                <h3>#10 LISTING NOT PULLING TO CBBAIN.COM - PUBLIC WEBITE  DUO REGES: CONSTRUCTIO INTERRETE. NIHIL AD REM! NE SIT SANE DUO REGES: CONSTRUCTIO INTERRETE. NIHIL AD REM! NE SIT SANE; DUO REGES: CONSTRUCTIO INTERRETE. NIHIL...</h3>
+                                            </div>
+                                        </v-flex>
+
+                                    </v-layout>
+                                    <!--<hr class="v-divider theme--light">-->
+                                    <v-layout>
+                                        <v-flex xs3 class="d-flex flex-row align-items-center">
+
+                                            <div class="d-flex flex-row align-items-center">
+                                                <v-btn color="primary" light class="text-xs-center">
+                                                    Active
+
+                                                </v-btn>
+
+                                            </div>
+
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">Contact : John Smith {Google}</span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs3 class="flex d-flex flex-row align-items-center ">
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">Assigned to : John Smith {Google}</span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs3 class="flex d-flex flex-row align-items-center">
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">
+                                                    Priority : <v-span style="color:red;">High</v-span>
+                                                </span>
+                                            </div>
+                                        </v-flex>
+
+                                        <v-flex xs3 flex d-flex flex-row align-items-center>
+                                            <div class="imtiaz d-flex align-middle">
+                                                <span class="align-self-center align-middle">
+                                                    Severity : Critical
+                                                </span>
+                                            </div>
+                                        </v-flex>
+
+                                    </v-layout>
+                                    <!--<hr class="v-divider theme--light">-->
+                                </v-flex>
+                                <!--<hr class="v-divider theme--light">-->
+                            </v-layout>
+                        </v-container>
+                    </v-flex>
+                    <!--Ticket List ended-->
+                    <!--Right Side bar Started-->
+                    <v-flex xs2 class="right-side-bar" pa-3>
+                        <v-layout row>
+                            <h3>VIEWS</h3>
+                        </v-layout>
+
+                        <v-layout row>
+                            <v-flex xs12  align-end pa-0 ma-0>
+
+                                <v-overflow-btn pa-0 ma-0 offset-y
+                                                :items="dropdown_font"
+                                                label="Select Filters"
+                                                target="#dropdown-example" bottom left flat solo></v-overflow-btn>
+
+                            </v-flex>
+                        </v-layout>
+
+                    </v-flex>
+                    <!--Right Side bar ended-->
+                </v-layout>
+            </v-content>
+
+            <!--Ticket List ended-->
+            <!--<hr class="v-divider theme--light">-->
+            <!-- Dialog Box for CRUD functionality Only-->
+            <!-- Dialog Box for Global Error Message-->
+            <!--<v-layout row justify-center>
+                <v-dialog v-model="showModal" persistent max-width="290">
+                    <v-btn slot="activator" color="primary" dark>Open Dialog</v-btn>
+                    <v-card>
+                        <v-card-title class="headline">Confirmation</v-card-title>
+                        <v-card-text>{{ messageBody }}</v-card-text>
+                        <v-card-actions v-if="defaultFooter">
+                            <v-spacer></v-spacer>
+                            <v-btn color="green darken-1" flat @click="abortLeave()">No</v-btn>
+                            <v-btn color="green darken-1" flat @click="confirmBox()">Yes</v-btn>
+                        </v-card-actions>
+                        <v-card-actions v-else>
+                            <v-spacer></v-spacer>
+                            <v-btn color="green darken-1" flat @click="abortLeave()">Ok</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </v-layout>-->
+            <v-spacer></v-spacer>
+
+
+            <!------------FOOTER STARt ------------------>
+            <v-footer color="blue accent-2" app inset class="hfcolor">
+                <span class="white--text">&copy; 2019</span>
+            </v-footer>
+        </v-app>
+
+
+
+
+    </div>
+</template>
+
+<script src="./master.ts"></script>
