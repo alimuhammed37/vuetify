@@ -1,0 +1,795 @@
+<template>
+    <!----*MAIN LAYOUT START*--->
+    <v-layout row>
+        <v-flex xs9 pr-4 pl-0>
+            <loader-component></loader-component>
+            <v-layout row class="contentWrap ticketTitle" pr-0 pt-3 pb-3>
+                <v-flex xs10>
+                    <v-layout align-center justify-start v-if="getTicketsDetailSelf">
+                        <h1>
+                            #{{getTicketsDetailSelf.serviceProviderTicketId}} {{getTicketsDetailSelf.ticketTitle}}
+                        </h1>
+                        <v-chip small
+                                :ripple="false"
+                                color="success"
+                                text-color="white"
+                                label
+                                class="ma-0"
+                                v-if="getTicketsDetailSelf.isActive == true">Active</v-chip>
+                        <v-chip small
+                                :ripple="false"
+                                color="#a1cf6d"
+                                text-color="white"
+                                label
+                                class="ma-0"
+                                v-else>Inactive</v-chip>
+                    </v-layout>
+
+                </v-flex>
+                <v-flex xs2>
+                    <v-layout align-center justify-end>
+
+                        <v-menu bottom left>
+
+                            <!--Active-->
+                            <v-btn fab flat small
+                                   slot="activator">
+                                <v-icon color="#aeaeae"
+                                        small
+                                        flat>fa fa-ellipsis-v</v-icon>
+                            </v-btn>
+
+                            <v-list>
+                                <v-list-tile @click="ticketExpenseList = true">
+                                    <v-list-tile-title>
+                                        {{$t('lang.components.ticketdetail.ticketditems.ticketexpense')}}
+                                    </v-list-tile-title>
+                                </v-list-tile>
+                            </v-list>
+
+
+                            <v-dialog v-model="ticketExpenseList"
+                                      max-width="700">
+                                <v-card>
+
+                                    <v-card-title class="headline soildGrey">
+                                        {{$t('lang.components.ticketdetail.ticketditems.ticketexpencehistory')}}
+                                    </v-card-title>
+
+                                    <v-card-text class="pt-0 pb-0 timeHistory p-relative">
+
+                                        
+                                        <v-btn absolute fab small slot="activator"
+                                               top right color="primary" @click="(addTime = true),(ticketExpenseList = false)">
+                                            <v-icon>add</v-icon>
+                                        </v-btn>
+                                       
+
+
+                                        <v-data-table :headers="expenseList"
+                                                      :items="expenseListItem"
+                                                      hide-actions>
+                                            <template slot="items" slot-scope="props">
+                                                <td>{{ props.item.name }}</td>
+                                                <td>
+                                                    {{ props.item.Description }}
+                                                </td>
+                                                <td>
+                                                    {{ props.item.ExpenseType }}
+                                                </td>
+                                                <td class="text-xs-right">
+                                                    {{ props.item.Expense }}
+                                                </td>
+                                                <td class="text-xs-right">
+                                                    <v-layout>
+                                                        <v-flex>
+                                                            <v-btn flat icon class="ma-0" color="primary">
+                                                                <v-icon>
+                                                                    edit
+                                                                </v-icon>
+                                                            </v-btn>
+                                                        </v-flex>
+                                                        <v-flex>
+                                                            <v-btn flat icon class="ma-0" color="danger">
+                                                                <v-icon>
+                                                                    delete
+                                                                </v-icon>
+                                                            </v-btn>
+                                                        </v-flex>
+                                                    </v-layout>
+                                                </td>
+                                            s</template>
+                                            <template>
+                                                <td colspan="4">
+                                                    {{$t('lang.components.ticketdetail.ticketditems.total')}}
+                                                </td>
+                                                <td class="text-xs-right">
+                                                    450
+                                                </td>
+                                            </template>
+                                        </v-data-table>
+                                    </v-card-text>
+
+                                    <v-card-actions class="pb-3">
+                                        <v-spacer></v-spacer>
+
+                                        <v-btn color="grey darken-1"
+                                               flat="flat"
+                                               @click="timeHistory = false">
+                                            {{$t('lang.common.btns.close')}}
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+
+
+                            <v-dialog v-model="ticketExpense"
+                                      max-width="600">
+                                <v-card>
+                                    <v-card-title class="headline">{{$t('lang.components.ticketDetail.ticketditems.tExpense')}}</v-card-title>
+
+                                    <v-card-text class="pt-0 pb-0">
+                                        <div class="container fluid grid-list-lg pa-0">
+                                            <v-flex xs12>
+                                                <v-text-field label="Title"></v-text-field>
+                                            </v-flex>
+                                            <v-flex xs12>
+                                                <v-textarea label="Description"
+                                                            rows="3"></v-textarea>
+                                            </v-flex>
+                                            <v-layout>
+                                                <v-flex xs6>
+                                                    <v-select label="Expense Type"></v-select>
+                                                </v-flex>
+                                                <v-flex xs6>
+                                                    <v-text-field label="Expense "></v-text-field>
+                                                </v-flex>
+                                            </v-layout>
+                                        </div>
+                                    </v-card-text>
+
+                                    <v-card-actions class="pb-3">
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="success"
+                                               flat="flat"
+                                               @click="ticketExpense = false">
+                                            {{$t('lang.common.btns.submit')}}
+                                        </v-btn>
+
+                                        <v-btn color="grey darken-1"
+                                               flat="flat"
+                                               @click="ticketExpense = false">
+                                            {{$t('lang.common.btns.close')}}
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+
+                        </v-menu>
+
+                    </v-layout>
+                </v-flex>
+            </v-layout>
+
+            <v-layout>
+                <v-flex xs12>
+                    <v-card class="contentWrap addTicketCard" flat mt-3 pb-2 pt-2>
+
+                        <v-card-title primary-title class="pr-0 pl-0 pb-0">
+                            <v-layout>
+
+                                <div class="profileIcon mr-3">
+                                    <v-layout align-center justify-center fill-height v-html="getInitials(getTechnicianDetail.name,' ')">
+                                    </v-layout>
+                                </div>
+
+                                <v-layout column>
+                                    <div class="c-title" v-if="getTechnicianDetail != null">{{getTechnicianDetail.name}}</div>
+                                    <div class="c-name">
+
+                                        {{$t('lang.common.timeNdate.tndItems.today')}} 9:00 am
+                                    </div>
+                                </v-layout>
+
+                                <v-btn color="#4e80b5"
+                                       light
+                                       fab
+                                       absolute
+                                       height="14px"
+                                       right pr-3 class="edit-float-btn" @click="EditForm">
+                                    <v-icon color="white">edit</v-icon>
+                                </v-btn>
+                            </v-layout>
+
+                        </v-card-title>
+
+
+                        <v-card-title class="pl-0 pr-0" v-html="getTicketsDetailCosmos[0].comment">
+
+                        </v-card-title>
+
+
+                        <v-card-actions class="upload-items pa-0 pb-3">
+                            <v-chip v-model="chip3"
+                                    close
+                                    color="#6f9dcd"
+                                    outline
+                                    round
+                                    clearable v-for="item in getTicketsDetailCosmos[0].attachments">
+                                <v-icon mr-5>fas fa-image</v-icon>{{item.name}}
+                            </v-chip>
+                        </v-card-actions>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+
+
+            <!--Public/Internal Notes Started-->
+
+            <v-layout class="contentWrap ticketReply" pt-4 pb-3 pr-0>
+                <div class="profileIcon mr-3">
+                    <v-layout align-center justify-center fill-height v-html="getInitials(getTechnicianDetail.name,' ')">
+
+                    </v-layout>
+                </div>
+                <v-flex>
+                    <v-layout column>
+                        <v-flex xs12 mb-3>
+                            <v-tabs v-model="active"
+                                    height="40px"
+                                    active-class="active">
+                                <v-tab ripple text-capitalize @click="SetType('1')">
+                                    {{$t('lang.components.ticketdetail.ticketditems.publicreply')}}
+                                </v-tab>
+                                <v-tab ripple text-capitalize @click="SetType('2')">
+                                    {{$t('lang.components.ticketdetail.ticketditems.internalnotes')}}
+                                </v-tab>
+
+                            </v-tabs>
+                        </v-flex>
+                        <v-flex xs12>
+                            <ckeditor :editor="editor" v-model="comment" :config="editorConfig"></ckeditor>
+                        </v-flex>
+
+                        <v-flex xs12 pt-3>
+                            <v-layout>
+                                <v-flex xs6>
+                                    <file-upload-component v-on:filesAdded="onFilesAdded" :enabled="!uploading"></file-upload-component>
+                                    <v-layout wrap>
+                                        <file-upload-list-component v-for="file in files"
+                                                                    :key="file.name"
+                                                                    :filename="file.name"
+                                                                    :uploadState="uploadProgress[file.name] ? uploadProgress[file.name].state : 'idle'"
+                                                                    :percentage="uploadProgress[file.name] ?  uploadProgress[file.name].percentage : 0">
+                                        </file-upload-list-component>
+                                    </v-layout>
+                                </v-flex>
+                                <v-flex xs6 text-xs-right pt-3>
+                                    <v-btn color="#7fc586"
+                                           outline
+                                           round
+                                           small
+                                           solo @click="formSubmit" v-show="!IsEdit">
+                                        <v-icon flat
+                                                class="mr-2 pa-0 flat"
+                                                size="16">fal fa-paper-plane</v-icon>
+                                        {{$t('lang.common.btns.send')}}
+                                    </v-btn>
+                                    <v-btn color="#7fc586"
+                                           outline
+                                           round
+                                           small
+                                           solo @click="formSubmit" v-show="IsEdit">
+                                        <v-icon flat
+                                                class="mr-2 pa-0 flat"
+                                                size="16">fal fa-paper-plane</v-icon> {{$t('lang.common.btns.update')}}
+                                    </v-btn>
+                                    <v-btn color="#7fc586"
+                                           outline
+                                           round
+                                           small
+                                           solo @click="formCancel" v-show="IsEdit">
+                                        <v-icon flat
+                                                class="mr-2 pa-0 flat"
+                                                size="16">fal fa-paper-plane</v-icon> {{$t('lang.common.btns.cancel')}}
+                                    </v-btn>
+                                </v-flex>
+                            </v-layout>
+                        </v-flex>
+                    </v-layout>
+                </v-flex>
+            </v-layout>
+
+            <!--Timeline head start-->
+            <v-layout column class="ticketTimeline">
+                <v-layout column class="contentWrap timelineTitle" pt-3 pb-3>
+                    <h4>{{$t('lang.components.ticketdetail.ticketditems.timeline')}}</h4>
+                </v-layout>
+                <v-layout column class="timelineBody">
+
+                    <div class="perDayConversation" v-for="items in getTicketsDetailCosmos" :key="index">
+
+                        <v-layout column align-center>
+                            <div class="dateDay">
+                                {{$t('lang.common.timeNdate.tndItems.today')}}
+                            </div>
+                        </v-layout>
+
+                        <v-layout row class="timlineList">
+                            <div class="date">
+                                01:00 pm
+                            </div>
+                            <div class="bulletCircle"></div>
+                            <div class="profileIconXs mr-3">
+                                <v-layout align-center justify-center fill-height>
+                                    WS
+                                </v-layout>
+                            </div>
+                            <v-flex xs8 class="timlineComment">
+                                <v-layout row>
+                                    <i class="fal fa-plus-circle pt-1 pr-3 timlineIcon"></i>
+                                    <v-flex>
+                                        <span class="userName">john Smith</span>
+                                        <span>Created Task</span>
+                                    </v-flex>
+                                </v-layout>
+                            </v-flex>
+                        </v-layout>
+
+                        <v-layout row class="timlineList">
+                            <div class="date">
+                                01:00 pm
+                            </div>
+                            <div class="bulletCircle"></div>
+                            <div class="profileIconXs mr-3">
+                                <v-layout align-center justify-center fill-height>
+                                    WS
+                                </v-layout>
+                            </div>
+                            <v-flex xs8 class="timlineComment">
+                                <v-layout row>
+                                    <i class="fal fa-plus-circle pt-1 pr-3 timlineIcon"></i>
+                                    <v-flex class="userComment">
+                                        <span class="userName">john Smith</span>
+                                        <span :class="{userActivity:true,'del' : items.isDeleted}" v-html="items.comment">
+                                        </span>
+
+                                        <v-chip v-model="chip3"
+                                                color="#6f9dcd"
+                                                outline
+                                                round
+                                                clearable v-for="childitem in items.attachments">
+                                            <v-icon>fas fa-image</v-icon>{{childitem.name}}
+                                        </v-chip>
+
+                                        <div class="actionItems">
+                                            <a href="#"><i class="fal fa-pen" @click="getItem(items)" v-show="!items.isDeleted"></i></a>
+                                            <a href="#"><i class="fal fa-trash-alt" @click="deleteItem(items)" v-show="!items.isDeleted"></i></a>
+                                        </div>
+                                    </v-flex>
+                                </v-layout>
+                            </v-flex>
+                        </v-layout>
+
+                        <v-layout row class="timlineList">
+                            <div class="date">
+                                01:00 pm
+                            </div>
+                            <div class="bulletCircle"></div>
+                            <div class="profileIconXs mr-3">
+                                <v-layout align-center justify-center fill-height>
+                                    WS
+                                </v-layout>
+                            </div>
+                            <v-flex xs8 class="timlineComment">
+                                <v-layout row>
+                                    <i class="fal fa-plus-circle pt-1 pr-3 timlineIcon"></i>
+                                    <v-flex>
+                                        <span class="userName">john Smith</span>
+                                        <span>Created Task</span>
+                                    </v-flex>
+                                </v-layout>
+                            </v-flex>
+                        </v-layout>
+                    </div>
+
+                </v-layout>
+            </v-layout>
+            <!--Timeline head end-->
+            <!--Public/Internal Notes ended-->
+
+        </v-flex>
+        <!--xs9 Left area Ended-->
+        <!--Right Side bar / Filters Started-->
+        <v-flex xs3 class="rightAside ticketDetailRightAside">
+            <v-layout pa-3 align-center justify-center class="timeSpent">
+                <div>
+                    <v-layout align-center justify-center>
+                        <div class="pr-2">
+                            <label>{{$t('lang.components.ticketdetail.ticketditems.timeSpent')}}</label>
+                        </div>
+
+                        <v-dialog v-model="timeHistory"
+                                  max-width="700">
+                            <v-card>
+
+                                <v-card-title class="headline soildGrey">
+                                    {{$t('lang.components.ticketdetail.ticketditems.timeHistory')}}
+                                </v-card-title>
+
+                                <v-card-text class="pt-0 pb-0 timeHistory p-relative">
+
+                                    <v-btn absolute
+                                           fab
+                                           small
+                                           top
+                                           right
+                                           color="primary">
+                                        <v-icon>add</v-icon>
+                                    </v-btn>
+
+                                    <v-data-table :headers="headers"
+                                                  :items="desserts">
+                                        <template slot="items" slot-scope="props">
+                                            <td>{{ props.item.name }}</td>
+                                            <td class="text-xs-right">
+                                                <v-menu v-model="menu1"
+                                                        :close-on-content-click="false"
+                                                        full-width
+                                                        max-width="290">
+                                                    <v-text-field slot="activator"
+                                                                  :value="computedDateFormattedMomentjs"
+                                                                  clearable
+                                                                  :label="$t('lang.common.timeNdate.tndItems.date')"
+                                                                  single-line
+                                                                  readonly></v-text-field>
+                                                    <v-date-picker v-model="date"
+                                                                   @change="menu1 = false"></v-date-picker>
+                                                </v-menu>
+                                            </td>
+                                            <td class="text-xs-right">
+
+                                                <v-menu v-model="menu3"
+                                                        :close-on-content-click="false"
+                                                        full-width
+                                                        max-width="290">
+                                                    <v-text-field slot="activator"
+                                                                  :value="computedDateFormattedMomentjs"
+                                                                  clearable
+                                                                  :label="$t('lang.common.timeNdate.tndItems.time')"
+                                                                  single-line
+                                                                  readonly></v-text-field>
+                                                    <v-time-picker v-model="Time"
+                                                                   @change="menu3 = false"></v-time-picker>
+                                                </v-menu>
+                                            </td>
+                                            <td class="text-xs-right">
+                                                <v-switch v-model="switch1" hide-details></v-switch>
+                                            </td>
+                                            <td class="text-xs-right">
+                                                <v-btn flat icon class="ma-0" color="primary">
+                                                    <v-icon>
+                                                        edit
+                                                    </v-icon>
+                                                </v-btn>
+                                                <v-btn flat icon class="ma-0" color="danger">
+                                                    <v-icon>
+                                                        delete
+                                                    </v-icon>
+                                                </v-btn>
+                                            </td>
+                                        </template>
+                                    </v-data-table>
+                                </v-card-text>
+
+                                <v-card-actions class="pb-3">
+                                    <v-spacer></v-spacer>
+
+                                    <v-btn color="grey darken-1"
+                                           flat="flat"
+                                           @click="timeHistory = false">
+                                        {{$t('lang.common.btns.close')}}
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+
+                        <v-layout align-center class="addTime">
+                            <div class="mr-1"><a @click="timeHistory = true">123</a></div>
+                            <v-btn slot="activator" class="ma-0" flat icon small @click="addTime = true">
+                                <v-icon>fal fa-plus-circle</v-icon>
+                            </v-btn>
+                            <v-dialog v-model="addTime"
+                                      max-width="600">
+                                <v-card>
+                                    <v-card-title class="headline">{{$t('lang.components.ticketdetail.ticketditems.addtime')}}</v-card-title>
+
+                                    <v-card-text class="pb-0 pt-0">
+                                        <div class="container fluid grid-list-lg pa-0">
+                                            <v-layout column>
+                                                <v-flex xs12>
+                                                    <v-autocomplete v-model="model"
+                                                                    :items="items"
+                                                                    :loading="isLoading"
+                                                                    :search-input.sync="search"
+                                                                    chips
+                                                                    clearable
+                                                                    hide-details
+                                                                    hide-selected
+                                                                    item-text="name"
+                                                                    item-value="symbol"
+                                                                    :label="$t('lang.common.labels.technician')">
+                                                        <template slot="no-data">
+                                                            <v-list-tile>
+                                                                <v-list-tile-title>
+                                                                    {{$t('lang.components.ticketdetail.ticketditems.searchYour')}}
+                                                                    <strong>{{$t('lang.common.labels.technicians')}}</strong>
+                                                                </v-list-tile-title>
+                                                            </v-list-tile>
+                                                        </template>
+                                                    </v-autocomplete>
+                                                </v-flex>
+                                                <v-flex xs12>
+                                                    <v-layout>
+                                                        <v-flex xs4>
+                                                            <v-menu v-model="addDate"
+                                                                    :close-on-content-click="false"
+                                                                    transition="scale-transition"
+                                                                    full-width
+                                                                    max-width="290">
+                                                                <v-text-field slot="activator"
+                                                                              :value="computedDateFormattedMomentjs"
+                                                                              clearable
+                                                                              hide-details
+                                                                              :label="$t('lang.common.timeNdate.tndItems.date')"
+                                                                              readonly></v-text-field>
+                                                                <v-date-picker v-model="date"
+                                                                               @change="menu2 = false"></v-date-picker>
+                                                            </v-menu>
+                                                        </v-flex>
+                                                        <v-flex xs4>
+                                                            <v-menu ref="menu"
+                                                                    :close-on-content-click="false"
+                                                                    v-model="TimeInput"
+                                                                    :return-value.sync="time"
+                                                                    transition="scale-transition"
+                                                                    full-width
+                                                                    max-width="290px"
+                                                                    min-width="290px">
+                                                                <v-text-field slot="activator"
+                                                                              v-model="time"
+                                                                              :label="$t('lang.common.timeNdate.tndItems.time')"
+                                                                              hide-details
+                                                                              readonly></v-text-field>
+                                                                <v-time-picker v-if="TimeInput"
+                                                                               v-model="time"
+                                                                               full-width
+                                                                               @change="$refs.menu.save(time)"></v-time-picker>
+                                                            </v-menu>
+                                                        </v-flex>
+                                                        <v-flex xs4>
+                                                            <v-switch :label="`Billable: ${switch1.toString()}`" v-model="switch1" hide-details></v-switch>
+                                                        </v-flex>
+                                                    </v-layout>
+                                                </v-flex>
+                                                <v-flex xs12>
+                                                    <v-textarea name="input-7-1"
+                                                                :label="$t('lang.common.labels.comment')"></v-textarea>
+                                                </v-flex>
+                                            </v-layout>
+                                        </div>
+                                    </v-card-text>
+
+                                    <v-card-actions class="pb-3">
+                                        <v-spacer></v-spacer>
+
+                                        <v-btn color="grey darken-1"
+                                               flat="flat"
+                                               @click="addTime = false">
+                                            Close
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+
+                            </v-dialog>
+
+                        </v-layout>
+
+                    </v-layout>
+                </div>
+            </v-layout>
+
+
+            <v-layout column pt-3 pb-4 pr-4 pl-4 class="ticketActions">
+                <v-flex align-end pa-0 ma-0>
+                    <v-select class="pb-3"
+                              attach
+                              chips
+                              :label="$t('lang.common.labels.status')"
+                              multiple hide-details></v-select>
+                    <v-select class="pb-3"
+                              attach
+                              chips
+                              :label="$t('lang.common.labels.assignTechnician')"
+                              multiple hide-details></v-select>
+                    <v-select class="pb-3"
+                              attach
+                              chips
+                              :label="$t('lang.common.labels.contact')"
+                              multiple hide-details></v-select>
+                    <v-select class="pb-3"
+                              attach
+                              chips
+                              :label="$t('lang.common.labels.asset')"
+                              multiple hide-details></v-select>
+                    <v-select class="pb-3"
+                              attach
+                              chips
+                              :label="$t('lang.components.ticketdetail.ticketditems.tickettype')"
+                              multiple hide-details></v-select>
+
+                    <v-layout column class="locationBtn">
+                        <v-flex>
+                            <v-label>{{$t('lang.common.labels.location')}}</v-label>
+                        </v-flex>
+                        <v-layout>
+                            <v-flex>
+                                <v-btn class="activeBtn ma-0" block depressed small>{{$t('lang.common.labels.remote')}}</v-btn>
+                            </v-flex>
+                            <v-flex>
+                                <v-btn class="ma-0" block depressed small>{{$t('lang.common.labels.onsite')}}</v-btn>
+                            </v-flex>
+                        </v-layout>
+                    </v-layout>
+
+                    <v-select class="pb-3"
+                              attach
+                              chips
+                              :label="$t('lang.common.labels.tags')"
+                              multiple hide-details></v-select>
+                    <v-select class="pb-3"
+                              attach
+                              chips
+                              :label="$t('lang.common.ticketfilters.priority.priority')"
+                              multiple hide-details></v-select>
+                    <v-select class="pb-3"
+                              attach
+                              chips
+                              :label="$t('lang.common.labels.severity')"
+                              multiple hide-details></v-select>
+                </v-flex>
+            </v-layout>
+            <!--Filters sec ended-->
+
+            <v-layout row pt-3 pb-4 pr-4 pl-4 class="suggestedActions">
+                <v-flex xs12 align-end ma-0>
+                    <h3 class="text-xs-left mb-3">{{$t('lang.components.ticketdetail.ticketditems.suggestedActions')}}</h3>
+                    <div class="text-xs-center">
+                        <v-menu :close-on-content-click="false"
+                                v-model="menu4"
+                                :nudge-right="40"
+                                lazy
+                                transition="scale-transition"
+                                offset-y
+                                full-width
+                                min-width="290px">
+                            <v-btn depressed
+                                   solo
+                                   block
+                                   round
+                                   success
+                                   color="#81c683"
+                                   class="mb-3 text-xs-center"
+                                   slot="activator">
+                                <v-icon class="white--text mr-2">far fa-plus-circle</v-icon>
+                                <span class="white--text wrap">{{$t('lang.components.ticketdetail.ticketditems.addToCalender')}}</span>
+                            </v-btn>
+                            <v-date-picker v-model="date" @input="menu4 = false"></v-date-picker>
+                        </v-menu>
+
+                        <v-btn @click="remoteConnectivity = true" depressed solo block round success color="#7ecac6" class="mb-3 text-xs-center">
+                            <v-icon class="white--text mr-2">fas fa-exchange-alt</v-icon>
+                            <span class="white--text wrap">{{$t('lang.components.ticketdetail.ticketditems.remoteConnectivity')}}</span>
+                        </v-btn>
+
+                        <v-dialog v-model="remoteConnectivity"
+                                  max-width="600">
+                            <v-card>
+                                <v-card-title class="headline">
+                                    {{$t('lang.components.ticketdetail.ticketditems.remoteConnectivitysmall')}}
+                                </v-card-title>
+
+                                <v-card-text class="pt-0">
+                                    <div class="container fluid grid-list-lg pa-0">
+                                        <v-layout column>
+                                            <v-flex mb-2>
+                                                <v-text-field label="Search" class="pt-0"
+                                                              hide-details
+                                                              single-line></v-text-field>
+                                            </v-flex>
+                                            <v-flex>
+                                                <v-list dense class="listView">
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>
+                                                            Microsoft Office Suit
+                                                        </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">
+                                                            <v-btn color="success" small round depressed>
+                                                                {{$t('lang.common.btns.connect')}}
+                                                            </v-btn>
+                                                        </v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>
+                                                            Wifi Router
+                                                        </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">
+                                                            <v-btn color="success" small round depressed disabled>
+                                                                {{$t('lang.common.btns.connect')}}
+                                                            </v-btn>
+                                                        </v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>
+                                                            SQL Server
+                                                        </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">
+                                                            <v-btn color="success" small round depressed>
+                                                                {{$t('lang.common.btns.connect')}}
+                                                            </v-btn>
+                                                        </v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>
+                                                            Printer
+                                                        </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">
+                                                            <v-btn color="success" small round depressed disabled>
+                                                                {{$t('lang.common.btns.connect')}}
+                                                            </v-btn>
+                                                        </v-list-tile-content>
+                                                    </v-list-tile>
+                                                </v-list>
+                                            </v-flex>
+                                        </v-layout>
+                                    </div>
+                                </v-card-text>
+
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+
+                                    <v-btn color="grey darken-1"
+                                           flat="flat"
+                                           @click="remoteConnectivity = false">
+                                        {{$t('lang.common.btns.close')}}
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+
+
+                    </div>
+                </v-flex>
+            </v-layout>
+
+
+        </v-flex>
+        <!--Right Side bar / Filters Started-->
+
+
+
+
+    </v-layout>
+</template>
+
+<script src="./ticket-detail.ts"></script>
+
+
+<style scoped>
+</style>
+
+<style>
+    .is-selected {
+        text-decoration: line-through;
+    }
+</style>
